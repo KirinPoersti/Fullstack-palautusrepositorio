@@ -2,6 +2,7 @@ const express = require('express')
 
 const app = express()
 app.set('json spaces', 2)
+app.use(express.json())
 
 let persons = [
   {
@@ -28,6 +29,17 @@ let persons = [
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
+})
+
+app.post('/api/persons', (request, response) => {
+  const person = {
+    id: Math.floor(Math.random() * 1_000_000_000).toString(),
+    name: request.body.name,
+    number: request.body.number,
+  }
+
+  persons = persons.concat(person)
+  response.json(person)
 })
 
 app.get('/api/persons/:id', (request, response) => {
