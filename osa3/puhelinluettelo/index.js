@@ -32,10 +32,20 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
+  const { name, number } = request.body
+
+  if (!name || !number) {
+    return response.status(400).json({ error: 'name or number is missing' })
+  }
+
+  if (persons.some((person) => person.name === name)) {
+    return response.status(400).json({ error: 'name must be unique' })
+  }
+
   const person = {
     id: Math.floor(Math.random() * 1_000_000_000).toString(),
-    name: request.body.name,
-    number: request.body.number,
+    name,
+    number,
   }
 
   persons = persons.concat(person)
