@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 app.set('json spaces', 2)
 
-const persons = [
+let persons = [
   {
     id: '1',
     name: 'Arto Hellas',
@@ -38,6 +38,11 @@ app.get('/api/persons/:id', (request, response) => {
   } else {
     response.status(404).end()
   }
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+  persons = persons.filter((person) => person.id !== request.params.id)
+  response.status(204).end()
 })
 
 app.get('/info', (request, response) => {
