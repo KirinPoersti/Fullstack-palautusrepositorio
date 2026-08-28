@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: kirin-phonebook-backend
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: osa3/puhelinluettelo
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/persons
