@@ -1,5 +1,7 @@
 # Fullstack-palautusrepositorio
 
-## Phonebook backend
+## Phonebook
 
-https://kirin-phonebook-backend.onrender.com/api/persons
+Application: https://kirin-phonebook-backend.onrender.com
+
+API: https://kirin-phonebook-backend.onrender.com/api/persons
