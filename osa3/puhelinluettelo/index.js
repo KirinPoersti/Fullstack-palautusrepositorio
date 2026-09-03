@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const Person = require('./models/person')
 
 const app = express()
 app.set('json spaces', 2)
@@ -36,7 +38,9 @@ let persons = [
 ]
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then((persons) => {
+    response.json(persons)
+  })
 })
 
 app.post('/api/persons', (request, response) => {
@@ -46,18 +50,14 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({ error: 'name or number is missing' })
   }
 
-  if (persons.some((person) => person.name === name)) {
-    return response.status(400).json({ error: 'name must be unique' })
-  }
-
-  const person = {
-    id: Math.floor(Math.random() * 1_000_000_000).toString(),
+  const person = new Person({
     name,
     number,
-  }
+  })
 
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then((savedPerson) => {
+    response.json(savedPerson)
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
