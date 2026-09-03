@@ -78,9 +78,13 @@ const App = () => {
             setNewName('')
             setNewNumber('')
           })
-          .catch(() => {
-            showNotification(`Information of ${existingPerson.name} has already been removed from server`, 'error')
-            setPersons(persons.filter(person => person.id !== existingPerson.id))
+          .catch(error => {
+            if (error.response?.status === 404) {
+              showNotification(`Information of ${existingPerson.name} has already been removed from server`, 'error')
+              setPersons(persons.filter(person => person.id !== existingPerson.id))
+            } else {
+              showNotification(error.response?.data?.error || 'Failed to update person', 'error')
+            }
           })
       }
 
@@ -99,6 +103,9 @@ const App = () => {
         showNotification(`Added ${returnedPerson.name}`)
         setNewName('')
         setNewNumber('')
+      })
+      .catch(error => {
+        showNotification(error.response?.data?.error || 'Failed to add person', 'error')
       })
   }
 
